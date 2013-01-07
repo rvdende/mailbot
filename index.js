@@ -1,14 +1,12 @@
-//ArrowMailBot v1
+//ArrowMailBot v2
 //very simple smtp server in nodejs
 var domain = "yourdomain.com";
-var webport = 1337; //this is a simple webserver to see contents of db
-
-var db = []; //to store mails
-
+var webport = 1337;
 var net = require('net');
 
+var db = []
+
 var mailbot = net.createServer(function (socket) {
-    //implements the hand shaking required to recieve emails
 	socket.write('220 '+domain+' ESMTP ArrowMailbot\n')
 	var incmail = {}
 	var recievingdata = false;
@@ -44,8 +42,19 @@ var mailbot = net.createServer(function (socket) {
         if (datastr.indexOf("\r\n.\r\n") >= 0) {
         	recievingdata = false;
         	socket.write('250 Ok: queued as 12345\n')	
-        	db.push(incmail)
-        	console.log('recieved an email!')
+            var MailParser = require("mailparser").MailParser;
+            var mailparser = new MailParser();
+            mailparser.on("headers", function(headers){
+            console.log(headers.received);
+            });
+            mailparser.on("end", function(mail){
+            db.push(mail);
+            console.log(mail);  // FINAL PARSED MAIL
+            });
+          //
+          mailparser.write(incmail.message);
+          mailparser.end();
+        	//console.log('recieved an email!')
         }
 
 		if (datastr.indexOf("QUIT") == 0) {
@@ -58,6 +67,7 @@ var mailbot = net.createServer(function (socket) {
 });
 
 mailbot.listen(25, domain);
+
 
 var http = require('http');
 http.createServer(function (req, res) {
