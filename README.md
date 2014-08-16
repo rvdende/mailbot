@@ -6,7 +6,7 @@ Mailbot is a minimal email sender for your server.
 Usage
 =====
 
-```
+```javascript
 var mailbot = require('./lib/email')
 
 // set to true to enable debug logging
@@ -15,22 +15,22 @@ mailbot.debug = false;
 
 // construct the email
 var email = {}
-email.from = "noreply@yourdomain.com";		// Your email address. ex. "you@yourdomain.com";
-email.fromname = "Mailbot";					// Your name ex. "John Doe"
+email.from = "noreply@yourdomain.com";		// Your email address
+email.fromname = "Mailbot";					// Your name
 
-email.rcpt = "santa@northpole.com";			// The target email address ex. "santa@northpole.com"
-email.rcptname = "Santa Claus";				// The target person's name ex. "Santa Claus"
+email.rcpt = "santa@northpole.com";			// The target email
+email.rcptname = "Santa Claus";				// The target person
 
-email.subject = "Debug test four";			// The short subject line of the email. "Email Subject"
-email.body = "last test";					// The main part of the email. "email message body content\r\nAnother line of content"
+email.subject = "Debug test four";			// Subject summary
 
+// The main part of the email. 
+email.body = "email message body content\r\nAnother line of content";					
+
+// Send it.
 mailbot.sendemail(email, function (data) {
 	console.log("EMAIL SENT")
 })
 ```
-
-
-
 
 Reference
 =========
