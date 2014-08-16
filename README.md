@@ -1,23 +1,34 @@
 mailbot
 =======
 
-Mailbot is a minimal email server for your domain. It sits and listens for smtp requests with incoming mail, and lets you send email without relying on sendmail or postfix. 
+Mailbot is a minimal email sender for your server.
 
-Mailbot uses [MailParser](https://github.com/andris9/mailparser) to parse and conform emails to utf8 objects.
-
-Setup
-```
-npm install mailparser
-```
-
-Edit index.js
-```
-var domain = "yourdomain.com";
-```
+Usage
+=====
 
 ```
-var webport = 1337; //this is a simple webserver to see contents of db
+var mailbot = require('./lib/email')
+
+// set to true to enable debug logging
+// this is useful to see if the remote server responds with some kind of error message
+mailbot.debug = false;	
+
+// construct the email
+var email = {}
+email.from = "noreply@yourdomain.com";		// Your email address. ex. "you@yourdomain.com";
+email.fromname = "Mailbot";					// Your name ex. "John Doe"
+
+email.rcpt = "santa@northpole.com";			// The target email address ex. "santa@northpole.com"
+email.rcptname = "Santa Claus";				// The target person's name ex. "Santa Claus"
+
+email.subject = "Debug test four";			// The short subject line of the email. "Email Subject"
+email.body = "last test";					// The main part of the email. "email message body content\r\nAnother line of content"
+
+mailbot.sendemail(email, function (data) {
+	console.log("EMAIL SENT")
+})
 ```
+
 
 
 
